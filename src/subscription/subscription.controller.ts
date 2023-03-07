@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { SubscriptionService } from './subscription.service';
 import { DeleteSubscriptionRequestDto } from './dto/delete-subscription-request.dto';
 import { DeactivateSubscriptionRequestDto } from './dto/deactivate-subscription-request.dto';
-import { DeleteResult, UpdateResult } from 'typeorm';
+import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
 import { SubscriptionEntity } from '../database/entity/subscription.entity';
 import { CreateSubscriptionRequestDto } from './dto/create-subscription-request.dto';
 
@@ -21,8 +21,8 @@ export class SubscriptionController {
   @Post('create')
   async createSubscription(
     @Body() createSubscriptionDto: CreateSubscriptionRequestDto,
-  ) {
-    await this.subscriptionService.createSubscription(createSubscriptionDto);
+  ): Promise<InsertResult> {
+    return this.subscriptionService.createSubscription(createSubscriptionDto);
   }
   @Post('deactivate')
   deactivateSubscription(
