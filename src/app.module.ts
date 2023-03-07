@@ -7,6 +7,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AddressModule } from './address/address.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { OrderModule } from './order/order.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { OrderModule } from './order/order.module';
     AddressModule,
     SubscriptionModule,
     OrderModule,
+    StripeModule,
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],
