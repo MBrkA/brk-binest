@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { UserRepository } from './repository/user.repository';
+import { UserEntity } from './entity/user.entity';
 
 @Module({
   imports: [
@@ -22,9 +24,9 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
         namingStrategy: new SnakeNamingStrategy(),
       }),
     }),
-    TypeOrmModule.forFeature([]),
+    TypeOrmModule.forFeature([UserEntity]),
   ],
-  providers: [],
-  exports: [],
+  providers: [UserRepository],
+  exports: [UserRepository],
 })
 export class DatabaseModule {}
