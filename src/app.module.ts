@@ -8,6 +8,8 @@ import { AddressModule } from './address/address.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { OrderModule } from './order/order.module';
 import { StripeModule } from './stripe/stripe.module';
+import { SchedulerModule } from './scheduler/scheduler.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import { StripeModule } from './stripe/stripe.module';
     SubscriptionModule,
     OrderModule,
     StripeModule,
+    SchedulerModule,
     ConfigModule.forRoot(),
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [
