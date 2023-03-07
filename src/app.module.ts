@@ -6,12 +6,14 @@ import { AuthGuard } from './auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { AddressModule } from './address/address.module';
 import { SubscriptionModule } from './subscription/subscription.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
     UserModule,
     AddressModule,
     SubscriptionModule,
+    OrderModule,
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],
