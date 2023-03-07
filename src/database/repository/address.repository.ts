@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, InsertResult, Repository, UpdateResult } from 'typeorm';
 import { AddressEntity } from '../entity/address.entity';
 import { UserEntity } from '../entity/user.entity';
 
@@ -25,15 +25,15 @@ export class AddressRepository {
       where: { user: user, active: true },
     });
   }
-  async createAddress(address: Partial<AddressEntity>) {
-    await this.addressRepository.insert(address);
+  async createAddress(address: Partial<AddressEntity>): Promise<InsertResult> {
+    return await this.addressRepository.insert(address);
   }
 
-  async deleteAddress(addressId: number) {
+  async deleteAddress(addressId: number): Promise<DeleteResult> {
     return await this.addressRepository.delete({ id: addressId });
   }
 
-  async deactivateAddress(addressId: number) {
+  async deactivateAddress(addressId: number): Promise<UpdateResult> {
     const address = await this.addressRepository.findOne({
       where: { id: addressId },
     });
