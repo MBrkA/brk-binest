@@ -9,6 +9,8 @@ import { AddressRepository } from './repository/address.repository';
 import { AddressEntity } from './entity/address.entity';
 import { SubscriptionEntity } from './entity/subscription.entity';
 import { SubscriptionRepository } from './repository/subscription.repository';
+import { OrderEntity } from './entity/order.entity';
+import { OrderRepository } from './repository/order.repository';
 
 @Module({
   imports: [
@@ -28,9 +30,24 @@ import { SubscriptionRepository } from './repository/subscription.repository';
         namingStrategy: new SnakeNamingStrategy(),
       }),
     }),
-    TypeOrmModule.forFeature([UserEntity, AddressEntity, SubscriptionEntity]),
+    TypeOrmModule.forFeature([
+      UserEntity,
+      AddressEntity,
+      SubscriptionEntity,
+      OrderEntity,
+    ]),
   ],
-  providers: [UserRepository, AddressRepository, SubscriptionRepository],
-  exports: [UserRepository, AddressRepository, SubscriptionRepository],
+  providers: [
+    UserRepository,
+    AddressRepository,
+    SubscriptionRepository,
+    OrderRepository,
+  ],
+  exports: [
+    UserRepository,
+    AddressRepository,
+    SubscriptionRepository,
+    OrderRepository,
+  ],
 })
 export class DatabaseModule {}
