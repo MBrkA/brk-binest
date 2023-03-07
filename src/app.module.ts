@@ -5,9 +5,15 @@ import { UserModule } from './user/user.module';
 import { AuthGuard } from './auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { AddressModule } from './address/address.module';
+import { SubscriptionModule } from './subscription/subscription.module';
 
 @Module({
-  imports: [UserModule, AddressModule, ConfigModule.forRoot()],
+  imports: [
+    UserModule,
+    AddressModule,
+    SubscriptionModule,
+    ConfigModule.forRoot(),
+  ],
   controllers: [AppController],
   providers: [
     {
