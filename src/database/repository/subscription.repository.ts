@@ -8,6 +8,7 @@ import {
   UpdateResult,
 } from 'typeorm';
 import { SubscriptionEntity } from '../entity/subscription.entity';
+import moment from 'moment';
 @Injectable()
 export class SubscriptionRepository {
   constructor(
@@ -38,6 +39,7 @@ export class SubscriptionRepository {
       where: { id: subscriptionId },
     });
     subscription.active = false;
+    subscription.updatedAt = new Date();
     return await this.subscriptionRepository.update(
       subscriptionId,
       subscription,
@@ -49,5 +51,35 @@ export class SubscriptionRepository {
       nextPaymentAt: Raw((alias) => `${alias} <= :date`, { date: new Date() }),
       active: true,
     });
+  }
+
+  async renewSubscription(subscriptionId: number): Promise<UpdateResult> {
+    const subscription = await this.subscriptionRepository.findOne({
+      where: { id: subscriptionId },
+    });
+    subscription.nextPaymentAt = moment()
+      .add(subscription.frequency, 'month')
+      .toDate();
+    subscription.paymentTryCount = 0;
+    subscription.updatedAt = new Date();
+    return await this.subscriptionRepository.update(
+      subscriptionId,
+      subscription,
+    );
+  }
+
+  async increaseTryCount(subscriptionId: number): Promise<UpdateResult> {
+    const subscription = await this.subscriptionRepository.findOne({
+      where: { id: subscriptionId },
+    });
+    subscription.paymentTryCount += 1;
+    subscription.updatedAt = new Date();
+    if (subscription.paymentTryCount === 3) {
+      subscription.active = false;
+    }
+    return await this.subscriptionRepository.update(
+      subscriptionId,
+      subscription,
+    );
   }
 }

@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { CurrencyType } from '../enum/currency.enum';
 import { UserEntity } from './user.entity';
+import { FrequencyType } from '../enum/frequency.enum';
 
 @Entity({ name: 'subscription' })
 export class SubscriptionEntity {
@@ -26,8 +27,8 @@ export class SubscriptionEntity {
   @Column()
   amount: number;
 
-  @Column()
-  frequency: Date;
+  @Column({ type: 'enum', enum: FrequencyType })
+  frequency: FrequencyType;
 
   @Column()
   nextPaymentAt: Date;

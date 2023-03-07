@@ -15,13 +15,14 @@ export class CreateOrderHelper {
     private readonly logger: Logger,
   ) {}
 
-  async createOrder(subscription: SubscriptionEntity) {
+  async createOrder(subscription: SubscriptionEntity): Promise<boolean> {
     const order = new OrderEntity();
     order.user = subscription.user;
     order.address = await this.addressRepository.getActiveAddressOfAUser(
       subscription.user,
     );
     order.subscription = subscription;
+
     await this.orderRepository
       .createOrder(order)
       .then(() => {
@@ -39,17 +40,20 @@ export class CreateOrderHelper {
         order.isSuccessful = false;
         this.logger.log(err);
       });
+
     await this.orderRepository.createOrder(order).catch((err) => {
       this.logger.log(err);
     });
+
     if (order.isSuccessful) {
-      await this.updateSubscription();
+      await this.updateSubscription(subscription.id);
+      return true;
     }
+    await this.subscriptionRepository.increaseTryCount(subscription.id);
+    return false;
   }
 
-  async updateSubscription() {
-    /*
-      TODO: CREATE FUNC ON REPO FIRSTLY
-     */
+  async updateSubscription(id: number) {
+    return this.subscriptionRepository.renewSubscription(id);
   }
 }

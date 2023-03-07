@@ -17,7 +17,9 @@ export class TasksService {
       await this.subscriptionRepository.getRenewableSubscriptions();
 
     for (const subscription of subsToRenew) {
-      await this.createOrderHelper.createOrder(subscription);
+      if (subscription.active && subscription.paymentTryCount < 3) {
+        await this.createOrderHelper.createOrder(subscription);
+      }
     }
   }
 }

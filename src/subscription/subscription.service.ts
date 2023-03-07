@@ -4,6 +4,7 @@ import { SubscriptionRepository } from '../database/repository/subscription.repo
 import { SubscriptionEntity } from '../database/entity/subscription.entity';
 import { CreateSubscriptionRequestDto } from './dto/create-subscription-request.dto';
 import { UserRepository } from '../database/repository/user.repository';
+import moment from 'moment/moment';
 
 @Injectable()
 export class SubscriptionService {
@@ -20,9 +21,6 @@ export class SubscriptionService {
   async createSubscription(
     subscription: CreateSubscriptionRequestDto,
   ): Promise<InsertResult> {
-    /*
-      TODO:dates
-     */
     const subscriptionEntity = new SubscriptionEntity();
     subscriptionEntity.user = await this.userRepository.getUser(
       subscription.userId,
@@ -30,7 +28,9 @@ export class SubscriptionService {
     subscriptionEntity.currency = subscription.currency;
     subscriptionEntity.amount = subscription.amount;
     subscriptionEntity.frequency = subscription.frequency;
-    subscriptionEntity.nextPaymentAt = new Date();
+    subscriptionEntity.nextPaymentAt = moment()
+      .add(subscription.frequency, 'month')
+      .toDate();
     subscriptionEntity.stripeCardId = subscription.stripeCardId;
     return this.subscriptionRepository.createSubscription(subscriptionEntity);
   }
