@@ -18,6 +18,7 @@ Nest.js project for back-end application.
 * @nestjs/schedule (^2.2.0)
 * @nestjs/typeorm (^9.0.1)
 * @nestjs/config (^2.3.1)
+* @nestjs/swagger (^6.2.1)
 
 ## Installation
 
