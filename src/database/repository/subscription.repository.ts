@@ -75,6 +75,8 @@ export class SubscriptionRepository {
     subscription.paymentTryCount += 1;
     subscription.updatedAt = new Date();
     if (subscription.paymentTryCount === 3) {
+      // SUBSCRIPTION DEACTIVATED AFTER THREE FAILED PAYMENT ATTEMPTS
+      // USER CAN BE NOTIFIED BY SENDING EMAIL
       subscription.active = false;
     }
     return await this.subscriptionRepository.update(
